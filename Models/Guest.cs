@@ -27,11 +27,11 @@ namespace Hotel_Administrator.Models
         public int RoomNumber { get; set; }
 
         /// Конструктор для ініціалізації нового гостя
-        public Guest(string passportId, string lastName, string firstName, DateTime checkIn, DateTime checkOut, int roomNumber)
+        public Guest(string lastName, string firstName, string passportId, DateTime checkIn, DateTime checkOut, int roomNumber)
         {
-            PassportId = passportId;
             LastName = lastName;
             FirstName = firstName;
+            PassportId = passportId;
             CheckInDate = checkIn;
             CheckOutDate = checkOut;
             RoomNumber = roomNumber;
