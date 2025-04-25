@@ -15,13 +15,13 @@ namespace Hotel_Administrator.Models
         public DateTime Date { get; set; }
 
         /// Сума, зазначена в квитанції
-        public decimal Amount { get; set; }
+        public float Amount { get; set; }
 
         /// Тип квитанції (заселення або виїзд)
         public ReceiptType Type { get; set; }
 
         /// Конструктор для ініціалізації нової квитанції
-        public Receipt(int id, string guestPassportId, DateTime date, decimal amount, ReceiptType type)
+        public Receipt(int id, string guestPassportId, DateTime date, float amount, ReceiptType type)
         {
             Id = id;
             GuestPassportId = guestPassportId;

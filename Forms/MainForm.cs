@@ -2,6 +2,8 @@
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using Hotel_Administrator.Models;
+using Hotel_Administrator.Forms;
 using Hotel_Administrator.Models.Hotel_Administrator.Models;
 
 namespace Hotel_Administrator
@@ -16,18 +18,22 @@ namespace Hotel_Administrator
 
             hotel = new Hotel();
 
+            // Під'єднуємо події кнопок
             AttachCursorEvents(CheckInButton);
             AttachCursorEvents(CheckOutButton);
             AttachCursorEvents(EditRoomsButton);
             AttachCursorEvents(ViewGuestsButton);
 
+            // Обробка натискання Enter у полі пошуку
             SearchTextBox.KeyDown += SearchTextBox_KeyDown;
 
+            // Завантаження початкових налаштувань форми
             Load += MainForm_Load;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Налаштування DataGridView для відображення результатів пошуку
             SearchResultsTable.ColumnCount = 6;
             SearchResultsTable.Columns[0].Name = "Прізвище";
             SearchResultsTable.Columns[1].Name = "Ім'я";
@@ -38,44 +44,38 @@ namespace Hotel_Administrator
 
             SearchResultsTable.ReadOnly = true;
             SearchResultsTable.AllowUserToAddRows = false;
-
             SearchResultsTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
             UpdateAllActionButtons();
         }
 
-        // Логіка для кнопок: CheckInButton; CheckOutButton; EditRoomsButton; ViewGuestsButton
+        // Зміна курсору
         private void AttachCursorEvents(Button button)
         {
-            button.MouseEnter += (s, e) => button.Cursor = button.Enabled ? Cursors.Hand : Cursors.No;
+            button.MouseEnter += (s, e) => button.Cursor = Cursors.Hand;
             button.MouseLeave += (s, e) => button.Cursor = Cursors.Default;
         }
 
         private void UpdateButtonState(Button button, bool enabled)
         {
             button.Enabled = enabled;
-            button.Cursor = enabled ? Cursors.Hand : Cursors.No;
         }
 
         private void UpdateAllActionButtons()
         {
             bool hasRows = SearchResultsTable.Rows.Count > 0;
 
-            UpdateButtonState(CheckInButton, hasRows);
+            UpdateButtonState(CheckInButton, true);
             UpdateButtonState(CheckOutButton, hasRows);
             UpdateButtonState(EditRoomsButton, hasRows);
             UpdateButtonState(ViewGuestsButton, hasRows);
         }
 
-        private void SearchTextBox_TextChanged(object sender, EventArgs e)
-        {
+        private void SearchTextBox_TextChanged(object sender, EventArgs e) { }
 
-        }
+        private void SearchResultsTable_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
-        private void SearchResultsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+        // Обробник для натискання Enter у полі пошуку
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -85,11 +85,11 @@ namespace Hotel_Administrator
             }
         }
 
+        // Обробка кнопки пошуку
         private void SearchButton_Click(object sender, EventArgs e)
         {
             string query = SearchTextBox.Text.Trim().ToLower();
 
-            // Якщо поле пошуку порожнє — очищаємо таблицю
             if (string.IsNullOrEmpty(query))
             {
                 SearchResultsTable.Rows.Clear();
@@ -97,7 +97,6 @@ namespace Hotel_Administrator
                 return;
             }
 
-            // Пошук збігів серед гостей
             var matchingGuests = hotel.Guests
                 .Where(g =>
                     g.FirstName.ToLower().Contains(query) ||
@@ -110,23 +109,41 @@ namespace Hotel_Administrator
 
             foreach (var guest in matchingGuests)
             {
-                SearchResultsTable.Rows.Add(
-                    guest.LastName,
-                    guest.FirstName,
-                    guest.PassportId,
-                    guest.RoomNumber,
-                    guest.CheckInDate.ToShortDateString(),
-                    guest.CheckOutDate.ToShortDateString()
-                );
+                AddGuestToTable(guest);
             }
 
             UpdateAllActionButtons();
         }
 
+        // Додавання гостя до таблиці результатів
+        private void AddGuestToTable(Guest guest)
+        {
+            SearchResultsTable.Rows.Add(
+                guest.LastName,
+                guest.FirstName,
+                guest.PassportId,
+                guest.RoomNumber,
+                guest.CheckInDate.ToShortDateString(),
+                guest.CheckOutDate.ToShortDateString()
+            );
+        }
+
+        // Обробка кнопки "Заселити"
         private void CheckInButton_Click(object sender, EventArgs e)
         {
-            if (!CheckInButton.Enabled) return;
-            // TODO: Додати логіку заселення
+            using (var checkInForm = new Check_inForm())
+            {
+                if (checkInForm.ShowDialog() == DialogResult.OK)
+                {
+                    var guest = checkInForm.CreatedGuest;
+                    if (guest != null)
+                    {
+                        hotel.Guests.Add(guest);
+                        AddGuestToTable(guest);
+                        UpdateAllActionButtons();
+                    }
+                }
+            }
         }
 
         private void CheckOutButton_Click(object sender, EventArgs e)
