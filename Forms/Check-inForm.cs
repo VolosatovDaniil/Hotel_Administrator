@@ -55,13 +55,9 @@ namespace Hotel_Administrator.Forms
                 MessageBox.Show("Дата виселення має бути пізніше дати заселення!", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return null;
             }
-
             return new Guest(lastName, firstName, passport, checkIn, checkOut, roomNumber);
         }
 
-        private void CheckInLabel_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void CheckInLabel_Click(object sender, EventArgs e) { }
     }
 }
