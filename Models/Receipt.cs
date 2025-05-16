@@ -5,23 +5,24 @@ namespace Hotel_Administrator.Models
     /// Клас представляє квитанцію на оплату, пов’язану з гостем готелю
     public class Receipt
     {
-        /// Унікальний ідентифікатор квитанції
+        // Унікальний ідентифікатор квитанції
         public int Id { get; set; }
 
-        /// Паспортний номер гостя, до якого належить квитанція
+        // Паспортний номер гостя, до якого належить квитанція
         public string GuestPassportId { get; set; }
 
-        /// Дата створення квитанції
+        // Дата створення квитанції
         public DateTime Date { get; set; }
 
-        /// Сума, зазначена в квитанції
+        // Сума, зазначена в квитанції
         public float Amount { get; set; }
 
-        /// Тип квитанції (заселення або виїзд)
+        // Тип квитанції (заселення або виїзд)
         public ReceiptType Type { get; set; }
 
-        /// Конструктор для ініціалізації нової квитанції
-        public Receipt(int id, string guestPassportId, DateTime date, float amount, ReceiptType type)
+        // Конструктор для ініціалізації нової квитанції
+        public Receipt(int id, string guestPassportId, DateTime date, float amount, 
+            ReceiptType type)
         {
             Id = id;
             GuestPassportId = guestPassportId;
@@ -31,7 +32,7 @@ namespace Hotel_Administrator.Models
         }
     }
 
-    /// Перелік можливих типів квитанції
+    // Перелік можливих типів квитанції
     public enum ReceiptType
     {
         CheckIn,

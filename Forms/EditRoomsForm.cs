@@ -13,9 +13,36 @@ namespace Hotel_Administrator.Forms
         public EditRoomsForm()
         {
             InitializeComponent();
+            this.KeyPreview = true;
+            this.KeyDown += EditRoomsForm_KeyDown;
             LoadRooms();
         }
 
+        // Обробка клавіш: Enter - підтвердження, Esc - закриття, F1 - допомога
+        private void EditRoomsForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.Enter)
+            {
+                EditRoomsButton.PerformClick();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F1)
+            {
+                MessageBox.Show(
+                    "Ви можете редагувати номер, клас і місткість номеру.\n" +
+                    "Для прийняття змін, натисність кнопку 'Зберегти зміни'.",
+                    "Підказка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                e.Handled = true;
+            }
+        }
+
+        // Завантаження списку номерів із готелю до таблиці
         private void LoadRooms()
         {
             rooms = Hotel.Instance.Rooms;
@@ -39,10 +66,10 @@ namespace Hotel_Administrator.Forms
                     room.CurrentGuests.Count < room.Capacity ? "Доступний" : "Не доступний"
                 );
             }
-            // Заборона редагування стовпця доступності
             EditRoomsTable.Columns["IsAvailable"].ReadOnly = true;
         }
 
+        // Обробник натискання кнопки збереження змін
         private void EditRoomsButton_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in EditRoomsTable.Rows)
@@ -63,12 +90,14 @@ namespace Hotel_Administrator.Forms
                 }
                 catch
                 {
-                    MessageBox.Show("Помилка при збереженні. Перевірте введені дані!", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Помилка при збереженні. Перевірте введені дані!", "Помилка", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
             LoadRooms();
-            MessageBox.Show("Зміни збережено!", "Успіх", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Зміни збережено!", "Успіх", MessageBoxButtons.OK, 
+                MessageBoxIcon.Information);
         }
 
         private void EditRoomsTable_CellContentClick(object sender, DataGridViewCellEventArgs e) { }

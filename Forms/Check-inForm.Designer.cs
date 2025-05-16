@@ -46,6 +46,8 @@ namespace Hotel_Administrator.Forms
             this.CheckOutDateText = new System.Windows.Forms.Label();
             this.CheckOutDatePicker = new System.Windows.Forms.DateTimePicker();
             this.ConfirmCheckInButton = new System.Windows.Forms.Button();
+            this.uploadButton = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.uploadButton)).BeginInit();
             this.SuspendLayout();
             // 
             // CheckInLabel
@@ -53,7 +55,7 @@ namespace Hotel_Administrator.Forms
             this.CheckInLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.CheckInLabel.AutoSize = true;
             this.CheckInLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckInLabel.Location = new System.Drawing.Point(106, 9);
+            this.CheckInLabel.Location = new System.Drawing.Point(106, 33);
             this.CheckInLabel.Name = "CheckInLabel";
             this.CheckInLabel.Size = new System.Drawing.Size(322, 42);
             this.CheckInLabel.TabIndex = 0;
@@ -65,7 +67,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.LastNameTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.LastNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LastNameTextBox.Location = new System.Drawing.Point(181, 81);
+            this.LastNameTextBox.Location = new System.Drawing.Point(181, 105);
             this.LastNameTextBox.Name = "LastNameTextBox";
             this.LastNameTextBox.Size = new System.Drawing.Size(280, 26);
             this.LastNameTextBox.TabIndex = 1;
@@ -76,7 +78,7 @@ namespace Hotel_Administrator.Forms
             this.LastNameText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.LastNameText.AutoSize = true;
             this.LastNameText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LastNameText.Location = new System.Drawing.Point(64, 81);
+            this.LastNameText.Location = new System.Drawing.Point(64, 105);
             this.LastNameText.Name = "LastNameText";
             this.LastNameText.Size = new System.Drawing.Size(99, 24);
             this.LastNameText.TabIndex = 2;
@@ -88,7 +90,7 @@ namespace Hotel_Administrator.Forms
             this.FirstNameText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.FirstNameText.AutoSize = true;
             this.FirstNameText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FirstNameText.Location = new System.Drawing.Point(63, 137);
+            this.FirstNameText.Location = new System.Drawing.Point(63, 161);
             this.FirstNameText.Name = "FirstNameText";
             this.FirstNameText.Size = new System.Drawing.Size(46, 24);
             this.FirstNameText.TabIndex = 4;
@@ -99,7 +101,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.FirstNameTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.FirstNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FirstNameTextBox.Location = new System.Drawing.Point(181, 137);
+            this.FirstNameTextBox.Location = new System.Drawing.Point(181, 161);
             this.FirstNameTextBox.Name = "FirstNameTextBox";
             this.FirstNameTextBox.Size = new System.Drawing.Size(280, 26);
             this.FirstNameTextBox.TabIndex = 3;
@@ -110,7 +112,7 @@ namespace Hotel_Administrator.Forms
             this.PassportText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.PassportText.AutoSize = true;
             this.PassportText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PassportText.Location = new System.Drawing.Point(63, 192);
+            this.PassportText.Location = new System.Drawing.Point(63, 216);
             this.PassportText.Name = "PassportText";
             this.PassportText.Size = new System.Drawing.Size(91, 24);
             this.PassportText.TabIndex = 6;
@@ -121,7 +123,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.PassportTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.PassportTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PassportTextBox.Location = new System.Drawing.Point(181, 192);
+            this.PassportTextBox.Location = new System.Drawing.Point(181, 216);
             this.PassportTextBox.Name = "PassportTextBox";
             this.PassportTextBox.Size = new System.Drawing.Size(280, 26);
             this.PassportTextBox.TabIndex = 5;
@@ -132,7 +134,7 @@ namespace Hotel_Administrator.Forms
             this.RoomNumberText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.RoomNumberText.AutoSize = true;
             this.RoomNumberText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RoomNumberText.Location = new System.Drawing.Point(63, 247);
+            this.RoomNumberText.Location = new System.Drawing.Point(63, 271);
             this.RoomNumberText.Name = "RoomNumberText";
             this.RoomNumberText.Size = new System.Drawing.Size(74, 24);
             this.RoomNumberText.TabIndex = 8;
@@ -143,7 +145,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.RoomNumberBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.RoomNumberBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RoomNumberBox.Location = new System.Drawing.Point(181, 247);
+            this.RoomNumberBox.Location = new System.Drawing.Point(181, 271);
             this.RoomNumberBox.Name = "RoomNumberBox";
             this.RoomNumberBox.Size = new System.Drawing.Size(280, 26);
             this.RoomNumberBox.TabIndex = 7;
@@ -154,7 +156,7 @@ namespace Hotel_Administrator.Forms
             this.CheckInDateText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.CheckInDateText.AutoSize = true;
             this.CheckInDateText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckInDateText.Location = new System.Drawing.Point(63, 302);
+            this.CheckInDateText.Location = new System.Drawing.Point(63, 326);
             this.CheckInDateText.Name = "CheckInDateText";
             this.CheckInDateText.Size = new System.Drawing.Size(112, 24);
             this.CheckInDateText.TabIndex = 10;
@@ -165,7 +167,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.CheckInDatePicker.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.CheckInDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckInDatePicker.Location = new System.Drawing.Point(181, 302);
+            this.CheckInDatePicker.Location = new System.Drawing.Point(181, 326);
             this.CheckInDatePicker.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.CheckInDatePicker.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.CheckInDatePicker.Name = "CheckInDatePicker";
@@ -179,7 +181,7 @@ namespace Hotel_Administrator.Forms
             this.CheckOutDateText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.CheckOutDateText.AutoSize = true;
             this.CheckOutDateText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckOutDateText.Location = new System.Drawing.Point(63, 357);
+            this.CheckOutDateText.Location = new System.Drawing.Point(63, 381);
             this.CheckOutDateText.Name = "CheckOutDateText";
             this.CheckOutDateText.Size = new System.Drawing.Size(112, 24);
             this.CheckOutDateText.TabIndex = 12;
@@ -190,7 +192,7 @@ namespace Hotel_Administrator.Forms
             // 
             this.CheckOutDatePicker.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.CheckOutDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckOutDatePicker.Location = new System.Drawing.Point(181, 357);
+            this.CheckOutDatePicker.Location = new System.Drawing.Point(181, 381);
             this.CheckOutDatePicker.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.CheckOutDatePicker.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.CheckOutDatePicker.Name = "CheckOutDatePicker";
@@ -204,7 +206,7 @@ namespace Hotel_Administrator.Forms
             this.ConfirmCheckInButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.ConfirmCheckInButton.BackColor = System.Drawing.SystemColors.Control;
             this.ConfirmCheckInButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ConfirmCheckInButton.Location = new System.Drawing.Point(133, 419);
+            this.ConfirmCheckInButton.Location = new System.Drawing.Point(133, 443);
             this.ConfirmCheckInButton.Name = "ConfirmCheckInButton";
             this.ConfirmCheckInButton.Size = new System.Drawing.Size(270, 40);
             this.ConfirmCheckInButton.TabIndex = 13;
@@ -212,11 +214,23 @@ namespace Hotel_Administrator.Forms
             this.ConfirmCheckInButton.UseVisualStyleBackColor = false;
             this.ConfirmCheckInButton.Click += new System.EventHandler(this.ConfirmCheckInButton_Click);
             // 
+            // uploadButton
+            // 
+            this.uploadButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.uploadButton.Image = ((System.Drawing.Image)(resources.GetObject("uploadButton.Image")));
+            this.uploadButton.Location = new System.Drawing.Point(469, 7);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(64, 64);
+            this.uploadButton.TabIndex = 14;
+            this.uploadButton.TabStop = false;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
             // Check_inForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 511);
+            this.Controls.Add(this.uploadButton);
             this.Controls.Add(this.ConfirmCheckInButton);
             this.Controls.Add(this.CheckOutDateText);
             this.Controls.Add(this.CheckOutDatePicker);
@@ -235,6 +249,7 @@ namespace Hotel_Administrator.Forms
             this.Name = "Check_inForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hotel Administrator";
+            ((System.ComponentModel.ISupportInitialize)(this.uploadButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,5 +331,6 @@ namespace Hotel_Administrator.Forms
         private System.Windows.Forms.Label CheckOutDateText;
         private System.Windows.Forms.DateTimePicker CheckOutDatePicker;
         private System.Windows.Forms.Button ConfirmCheckInButton;
+        private System.Windows.Forms.PictureBox uploadButton;
     }
 }

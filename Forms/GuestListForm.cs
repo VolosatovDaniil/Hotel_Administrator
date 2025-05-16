@@ -12,6 +12,10 @@ namespace Hotel_Administrator.Forms
         public GuestListForm()
         {
             InitializeComponent();
+
+            this.KeyPreview = true;
+            this.KeyDown += GuestListForm_KeyDown;
+
             GuestListTable.ReadOnly = false;
             GuestListTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             GuestListTable.MultiSelect = false;
@@ -20,6 +24,30 @@ namespace Hotel_Administrator.Forms
             LoadGuests();
         }
 
+        // Обробка клавіш: Enter - підтвердження, Esc - закриття, F1 - допомога
+        private void GuestListForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F1)
+            {
+                MessageBox.Show(
+                    "Ця форма дозволяє редагувати дані гостей.\n" +
+                    "Виділіть рядок, змініть значення у таблиці та натисність 'Enter'.\n",
+                    "Підказка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                EditButton.PerformClick();
+                e.Handled = true;
+            }
+        }
+
+        // Завантаження гостей із готелю до таблиці
         private void LoadGuests()
         {
             var guests = Hotel.Instance.Guests;
@@ -49,6 +77,7 @@ namespace Hotel_Administrator.Forms
             }
         }
 
+        // Збереження змін у властивостях гостя після редагування таблиці
         private void GuestListTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -71,12 +100,12 @@ namespace Hotel_Administrator.Forms
                     if (DateTime.TryParse(row.Cells[5].Value?.ToString(), out DateTime checkOut))
                         guest.CheckOutDate = checkOut;
 
-                    // Підсвічення зміненого рядка
                     HighlightRowTemporarily(row, Color.LightGreen);
                 }
             }
         }
 
+        // Підсвічення зміненого рядка в таблиці
         private async void HighlightRowTemporarily(DataGridViewRow row, Color highlightColor)
         {
             Color originalColor = row.DefaultCellStyle.BackColor;
@@ -87,6 +116,7 @@ namespace Hotel_Administrator.Forms
             row.DefaultCellStyle.BackColor = originalColor;
         }
 
+        // Обробник натискання кнопки "Редагувати"
         private void EditButton_Click(object sender, EventArgs e)
         {
             if (GuestListTable.SelectedRows.Count == 0)
@@ -101,11 +131,16 @@ namespace Hotel_Administrator.Forms
             var guest = Hotel.Instance.Guests.FirstOrDefault(g => g.PassportId == passportId);
             if (guest != null)
             {
-                MessageBox.Show($"Оберіть властивість гостя для зміни, після чого натисніть 'Enter' для прийняття змін.");
+                MessageBox.Show(
+                    $"Оберіть властивість гостя для зміни, " +
+                    $"після чого натисніть 'Enter' для прийняття змін.", 
+                    "Інструкція", MessageBoxButtons.OK, MessageBoxIcon.Information
+                    );
             }
             else
             {
-                MessageBox.Show("Гість не знайдений.");
+                MessageBox.Show("Гість не знайдений.", "Помилка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

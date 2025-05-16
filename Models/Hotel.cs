@@ -4,10 +4,13 @@ using System.Linq;
 
 namespace Hotel_Administrator.Models
 {
-    /// Фасадний клас, який містить основну логіку управління готелем, номерами, гостями та квитанціями.
+    /// Фасадний клас, який містить основну логіку управління готелем, номерами, 
+    /// гостями та квитанціями.
     public class Hotel
     {
         private static Hotel instance;
+
+        // Єдиний екземпляр класу
         public static Hotel Instance
         {
             get
@@ -20,53 +23,55 @@ namespace Hotel_Administrator.Models
             }
         }
 
-        /// Список всіх номерів у готелі
+        // Список всіх номерів у готелі
         public List<Room> Rooms { get; set; } = new List<Room>();
 
-        /// Список всіх гостей готелю
+        // Список всіх гостей готелю
         public List<Guest> Guests { get; set; } = new List<Guest>();
 
-        /// Список усіх квитанцій
+        // Список усіх квитанцій
         public List<Receipt> Receipts { get; set; } = new List<Receipt>();
 
-        private int nextReceiptId = 3; // Починаємо з 3, бо 1 і 2 вже є
+        private int nextReceiptId = 3;
 
-        /// Ініціалізує готель із тестовими даними
+        // Конструктор для ініціалізації готелю із тестовими даними
         public Hotel()
         {
-            // Створення номерів
             Rooms.Add(new Room(101, "Економ", 2));
             Rooms.Add(new Room(102, "Стандарт", 3));
             Rooms.Add(new Room(201, "Люкс", 2));
 
-            // Створення гостей
-            Guests.Add(new Guest("Шевченко", "Олександр", "AB123456", new DateTime(2025, 4, 1), new DateTime(2025, 4, 8), 101));
-            Guests.Add(new Guest("Мельник", "Ганна", "CD123456", new DateTime(2025, 4, 2), new DateTime(2025, 4, 10), 102));
+            Guests.Add(new Guest("Шевченко", "Олександр", "AB123456", new DateTime(2025, 4, 1), 
+                new DateTime(2025, 4, 8), 101));
+            Guests.Add(new Guest("Мельник", "Ганна", "CD123456", new DateTime(2025, 4, 2), 
+                new DateTime(2025, 4, 10), 102));
 
-            // Додати гостей до номерів
             Rooms[0].CurrentGuests.Add(Guests[0]);
             Rooms[1].CurrentGuests.Add(Guests[1]);
 
-            // Створення квитанцій
-            Receipts.Add(new Receipt(1, "AB123456", new DateTime(2025, 4, 1), 7000, ReceiptType.CheckIn));
-            Receipts.Add(new Receipt(2, "CD654321", new DateTime(2025, 4, 2), 8000, ReceiptType.CheckIn));
+            Receipts.Add(new Receipt(1, "AB123456", new DateTime(2025, 4, 1), 7000,
+                ReceiptType.CheckIn));
+            Receipts.Add(new Receipt(2, "CD123456", new DateTime(2025, 4, 2), 8000,
+                ReceiptType.CheckIn));
         }
 
-        /// Пошук гостей за частковим збігом імені, прізвища або паспорта
+        // Пошук гостей за іменем, прізвищем або паспортом
         public List<Guest> SearchGuests(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) return new List<Guest>();
 
             searchTerm = searchTerm.ToLower();
             return Guests
-                .Where(g =>
-                    (!string.IsNullOrEmpty(g.FirstName) && g.FirstName.ToLower().Contains(searchTerm)) ||
-                    (!string.IsNullOrEmpty(g.LastName) && g.LastName.ToLower().Contains(searchTerm)) ||
-                    (!string.IsNullOrEmpty(g.PassportId) && g.PassportId.ToLower().Contains(searchTerm)))
+                .Where(g => (!string.IsNullOrEmpty(g.FirstName) && 
+            g.FirstName.ToLower().Contains(searchTerm)) || 
+            (!string.IsNullOrEmpty(g.LastName) && 
+            g.LastName.ToLower().Contains(searchTerm)) || 
+            (!string.IsNullOrEmpty(g.PassportId) && 
+            g.PassportId.ToLower().Contains(searchTerm)))
                 .ToList();
         }
 
-        /// Пошук номера за номером кімнати або класом
+        // Пошук номерів за номером кімнати або класом
         public List<Room> SearchRooms(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) return new List<Room>();
@@ -79,7 +84,7 @@ namespace Hotel_Administrator.Models
                 .ToList();
         }
 
-        /// Повертає список гостей, які повинні виїхати сьогодні
+        // Список гостей, які повинні виїхати сьогодні
         public List<Guest> GetGuestsCheckingOutToday()
         {
             DateTime today = DateTime.Today;
@@ -88,18 +93,37 @@ namespace Hotel_Administrator.Models
                 .ToList();
         }
 
-        /// Генерує унікальний ідентифікатор квитанції
+        // Генерація унікального ідентифікатора квитанції
         public int GenerateReceiptId()
         {
             return nextReceiptId++;
         }
 
-        /// Обчислює суму оплати для гостя
+        // Обчислення суми оплати для вказаного гостя
         public float CalculateCharge(Guest guest)
         {
             int days = (int)(guest.CheckOutDate - guest.CheckInDate).TotalDays;
             if (days <= 0) days = 1;
-            return days * 100f;
+
+            var room = Rooms.FirstOrDefault(r => r.Number == guest.RoomNumber);
+            float pricePerDay = 100;
+
+            if (room != null)
+            {
+                switch (room.Class.ToLower())
+                {
+                    case "економ":
+                        pricePerDay = 100;
+                        break;
+                    case "стандарт":
+                        pricePerDay = 350;
+                        break;
+                    case "люкс":
+                        pricePerDay = 700;
+                        break;
+                }
+            }
+            return days * pricePerDay;
         }
     }
 }

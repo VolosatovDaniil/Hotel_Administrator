@@ -16,6 +16,9 @@ namespace Hotel_Administrator
             InitializeComponent();
             hotel = Hotel.Instance;
 
+            this.KeyPreview = true;
+            this.KeyDown += MainForm_KeyDown;
+
             AttachCursorEvents(CheckInButton);
             AttachCursorEvents(CheckOutButton);
             AttachCursorEvents(EditRoomsButton);
@@ -25,6 +28,27 @@ namespace Hotel_Administrator
             Load += MainForm_Load;
         }
 
+        // Обробка клавіш: Esc - закриття, F1 - допомога
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F1)
+            {
+                MessageBox.Show(
+                    "Це головне вікно керування готелем.\n" +
+                    "Ви можете заселяти, виселяти гостей, редагувати номери та шукати дані.\n" +
+                    "Для пошуку гостя введіть його прізвище, ім'я, номер паспорту або номер номеру.",
+                    "Підказка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                e.Handled = true;
+            }
+            
+        }
+
+        // Заповнює таблицю колонками та налаштовує параметри
         private void MainForm_Load(object sender, EventArgs e)
         {
             SearchResultsTable.ColumnCount = 6;
@@ -45,12 +69,14 @@ namespace Hotel_Administrator
             UpdateAllActionButtons();
         }
 
+        // Додавання ефекту зміни курсора при наведенні
         private void AttachCursorEvents(Button button)
         {
             button.MouseEnter += (s, e) => button.Cursor = Cursors.Hand;
             button.MouseLeave += (s, e) => button.Cursor = Cursors.Default;
         }
 
+        // Активує всі кнопки дій
         private void UpdateAllActionButtons()
         {
             CheckInButton.Enabled = true;
@@ -59,6 +85,7 @@ namespace Hotel_Administrator
             ViewGuestsButton.Enabled = true;
         }
 
+        // Обробка клавіші 'Enter' для поля пошуку
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -68,6 +95,7 @@ namespace Hotel_Administrator
             }
         }
 
+        // Обробка кнопки "Пошук"
         private void SearchButton_Click(object sender, EventArgs e)
         {
             string query = SearchTextBox.Text.Trim().ToLower();
@@ -75,6 +103,8 @@ namespace Hotel_Administrator
 
             if (string.IsNullOrEmpty(query))
             {
+                MessageBox.Show("Введіть дані для пошуку.", "Порожній запит", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 UpdateAllActionButtons();
                 return;
             }
@@ -87,13 +117,22 @@ namespace Hotel_Administrator
                     g.RoomNumber.ToString().Contains(query))
                 .ToList();
 
-            foreach (var guest in matchingGuests)
+            if (matchingGuests.Count == 0)
             {
-                AddGuestToTable(guest);
+                MessageBox.Show("Гостей не знайдено.", "Результати пошуку", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                foreach (var guest in matchingGuests)
+                {
+                    AddGuestToTable(guest);
+                }
             }
             UpdateAllActionButtons();
         }
 
+        // Додавання результатів пошуку до таблиці
         private void AddGuestToTable(Guest guest)
         {
             SearchResultsTable.Rows.Add(
@@ -106,6 +145,7 @@ namespace Hotel_Administrator
             );
         }
 
+        // Обробка кнопки "Поселити"
         private void CheckInButton_Click(object sender, EventArgs e)
         {
             using (var checkInForm = new Check_inForm())
@@ -129,13 +169,15 @@ namespace Hotel_Administrator
             }
         }
 
+        // Обробка кнопки "Виселити"
         private void CheckOutButton_Click(object sender, EventArgs e)
         {
             Guest guest = null;
 
             if (SearchResultsTable.SelectedRows.Count > 0)
             {
-                string selectedPassportId = SearchResultsTable.SelectedRows[0].Cells[2].Value.ToString();
+                string selectedPassportId = SearchResultsTable.SelectedRows[0].Cells[2].Value
+                    .ToString();
                 guest = hotel.Guests.FirstOrDefault(g => g.PassportId == selectedPassportId);
             }
 
@@ -150,6 +192,7 @@ namespace Hotel_Administrator
             }
         }
 
+        // Обробка кнопки "Редагувати номери"
         private void EditRoomsButton_Click(object sender, EventArgs e)
         {
             using (var editRoomsForm = new EditRoomsForm())
@@ -159,6 +202,7 @@ namespace Hotel_Administrator
             }
         }
 
+        // Обробка кнопки "Переглянути гостей"
         private void ViewGuestsButton_Click(object sender, EventArgs e)
         {
             using (var guestListForm = new GuestListForm())
@@ -168,6 +212,7 @@ namespace Hotel_Administrator
             }
         }
 
+        // Оновлення таблиці
         private void RefreshTableFromHotel()
         {
             SearchResultsTable.Rows.Clear();
@@ -181,6 +226,7 @@ namespace Hotel_Administrator
 
         private void SearchTextBox_TextChanged(object sender, EventArgs e) { }
 
-        private void SearchResultsTable_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void SearchResultsTable_CellContentClick(object sender, 
+            DataGridViewCellEventArgs e){ }
     }
 }
