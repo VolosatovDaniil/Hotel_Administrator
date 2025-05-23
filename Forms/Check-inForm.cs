@@ -113,14 +113,13 @@ namespace Hotel_Administrator.Forms
             {
                 File.WriteAllText(saveFileDialog.FileName,
 $@"Квитанція №{receipt.Id}
-Тип: Заселення
+Тип: {receipt.Type}
 ПІБ: {guest.FullName}
 Паспорт: {guest.PassportId}
 Номер кімнати: {guest.RoomNumber}
 Дата заселення: {guest.CheckInDate:dd.MM.yyyy}
 Дата виселення: {guest.CheckOutDate:dd.MM.yyyy}
-Дата створення квитанції: {receipt.Date:dd.MM.yyyy}
-Тип: {receipt.Type}");
+Дата створення квитанції: {receipt.Date:dd.MM.yyyy}");
             }
         }
 

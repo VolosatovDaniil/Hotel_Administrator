@@ -87,7 +87,7 @@ namespace Hotel_Administrator.Forms
             GuestToCheckOut.CheckOutDate = CheckOutDatePicker.Value;
 
             // Обчислення суми
-            float totalAmount = Hotel.Instance.CalculateCharge(GuestToCheckOut);
+            decimal totalAmount = Hotel.Instance.CalculateCharge(GuestToCheckOut);
 
             // Створення квитанції
             var receipt = new Receipt(

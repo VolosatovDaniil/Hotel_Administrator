@@ -192,7 +192,7 @@ namespace Hotel_Administrator
             this.CheckInButton.Name = "CheckInButton";
             this.CheckInButton.Size = new System.Drawing.Size(125, 38);
             this.CheckInButton.TabIndex = 4;
-            this.CheckInButton.Text = "Поселити";
+            this.CheckInButton.Text = "Заселити";
             this.CheckInButton.UseVisualStyleBackColor = false;
             this.CheckInButton.Click += new System.EventHandler(this.CheckInButton_Click);
             // 

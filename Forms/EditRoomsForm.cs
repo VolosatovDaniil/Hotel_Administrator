@@ -72,32 +72,63 @@ namespace Hotel_Administrator.Forms
         // Обробник натискання кнопки збереження змін
         private void EditRoomsButton_Click(object sender, EventArgs e)
         {
+            var newRoomNumbers = new HashSet<int>();
+
             foreach (DataGridViewRow row in EditRoomsTable.Rows)
             {
                 try
                 {
-                    int number = Convert.ToInt32(row.Cells["Number"].Value);
-                    string roomClass = row.Cells["Class"].Value.ToString();
-                    int capacity = Convert.ToInt32(row.Cells["Capacity"].Value);
+                    if (row.IsNewRow) continue;
+
+                    string numberText = row.Cells["Number"].Value?.ToString();
+                    string classText = row.Cells["Class"].Value?.ToString();
+                    string capacityText = row.Cells["Capacity"].Value?.ToString();
+
+                    if (!int.TryParse(numberText, out int number) ||
+                        !int.TryParse(capacityText, out int capacity) ||
+                        string.IsNullOrWhiteSpace(classText))
+                    {
+                        throw new Exception("Некоректні або порожні дані!");
+                    }
+
+                    if (capacity <= 0)
+                    {
+                        throw new Exception(
+                            $"Місткість у рядку {row.Index + 1} має бути більше 0!"
+                        );
+                    }
+
+                    bool isDuplicate = rooms.Any(r => r.Number == number &&
+                        EditRoomsTable.Rows[row.Index].Cells["Number"].Value.ToString() 
+                        != r.Number.ToString());
+
+                    if (newRoomNumbers.Contains(number) || isDuplicate)
+                    {
+                        throw new Exception(
+                            $"Номер кімнати {number} не унікальний (рядок {row.Index + 1})."
+                        );
+                    }
+                    newRoomNumbers.Add(number);
 
                     Room room = rooms.FirstOrDefault(r => r.Number == number);
                     if (room != null)
                     {
-                        room.Class = roomClass;
+                        room.Class = classText;
                         room.Capacity = capacity;
                         room.IsAvailable = room.CurrentGuests.Count < room.Capacity;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Помилка при збереженні. Перевірте введені дані!", "Помилка", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        $"Помилка в рядку {row.Index + 1}: {ex.Message}",
+                        "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
             LoadRooms();
-            MessageBox.Show("Зміни збережено!", "Успіх", MessageBoxButtons.OK, 
-                MessageBoxIcon.Information);
+            MessageBox.Show("Зміни збережено успішно!", "Успіх",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void EditRoomsTable_CellContentClick(object sender, DataGridViewCellEventArgs e) { }

@@ -100,26 +100,26 @@ namespace Hotel_Administrator.Models
         }
 
         // Обчислення суми оплати для вказаного гостя
-        public float CalculateCharge(Guest guest)
+        public decimal CalculateCharge(Guest guest)
         {
             int days = (int)(guest.CheckOutDate - guest.CheckInDate).TotalDays;
             if (days <= 0) days = 1;
 
             var room = Rooms.FirstOrDefault(r => r.Number == guest.RoomNumber);
-            float pricePerDay = 100;
+            decimal pricePerDay = 100m;
 
             if (room != null)
             {
                 switch (room.Class.ToLower())
                 {
                     case "економ":
-                        pricePerDay = 100;
+                        pricePerDay = 100m;
                         break;
                     case "стандарт":
-                        pricePerDay = 350;
+                        pricePerDay = 350m;
                         break;
                     case "люкс":
-                        pricePerDay = 700;
+                        pricePerDay = 700m;
                         break;
                 }
             }
